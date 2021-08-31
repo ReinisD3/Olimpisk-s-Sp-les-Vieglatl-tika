@@ -3,6 +3,8 @@ class Runner
 {
     public string $name;
     public int $trackPosition = 0;
+    public int $time = 0;
+    public int $finishTime = 0;
     function __construct($nameSymbols)
     {
         $this->name = $nameSymbols[array_rand($nameSymbols)];
@@ -44,13 +46,16 @@ class RunSimulator
         foreach ($this->runners as $runner)
         {
                 $runner->trackPosition += rand(1,2);
+                $runner->time++;
         }
     }
     public function updateWinners()
     {
         foreach ($this->runners as $runner) {
             if ($runner->trackPosition >= $this->trackLength && !in_array($runner,$this->winners)) {
+                $runner->finishTime = $runner->time;
                 $this->winners[] = $runner;
+
             }
         }
     }
@@ -89,13 +94,17 @@ class SimulatorInterface
     }
     private function displayWinners()
     {
-
-        foreach ($this->simulator->winners as $position =>$winner)
+        $position = 0;
+        $previousRunnerTime = 0;
+        foreach ($this->simulator->winners as $winner)
         {
-            $position ++;
+            if($winner->finishTime !== $previousRunnerTime){
+                $position ++;
+            }
             echo "Position $position  is $winner->name ".PHP_EOL;
+            $previousRunnerTime = $winner->finishTime;
         }
     }
 }
-$displayRun = new SimulatorInterface(new RunSimulator(3,44));
+$displayRun = new SimulatorInterface(new RunSimulator(5,22));
 $displayRun->displayRun();
