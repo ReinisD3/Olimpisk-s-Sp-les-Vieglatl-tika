@@ -55,7 +55,6 @@ class RunSimulator
             if ($runner->trackPosition >= $this->trackLength && !in_array($runner,$this->winners)) {
                 $runner->finishTime = $runner->time;
                 $this->winners[] = $runner;
-
             }
         }
     }
@@ -74,7 +73,7 @@ class SimulatorInterface
         {
             foreach ($this->simulator->track as $key => $section)
             {
-                echo $key === $runner->trackPosition ? $runner->name.' ' : $section.' ';
+                echo $key === $runner->trackPosition ? $runner->name : $section;
             }
             echo PHP_EOL;
         }
@@ -106,5 +105,5 @@ class SimulatorInterface
         }
     }
 }
-$displayRun = new SimulatorInterface(new RunSimulator(5,22));
+$displayRun = new SimulatorInterface(new RunSimulator(5,42));
 $displayRun->displayRun();
